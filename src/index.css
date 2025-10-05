@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+
 html {
   scroll-behavior: smooth;
+}
+
+/* Tailwind dark mode support */
+@media (prefers-color-scheme: dark) {
+  html:not(.light):not(.dark) {
+    color-scheme: dark;
+  }
+}
+
+body.dark {
+  background: #18181b;
+  color: #fff;
 }

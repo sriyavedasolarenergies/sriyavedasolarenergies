@@ -1,8 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X, Sun, Zap } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme') === 'dark';
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [darkMode]);
 
   const navItems = [
     { href: '#home', label: 'Home' },
@@ -15,7 +31,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-md border-b border-orange-500/20">
+    <header className="fixed top-0 w-full z-50 bg-black/90 dark:bg-white/90 backdrop-blur-md border-b border-orange-500/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -32,6 +48,14 @@ const Header = () => {
             </div>
           </div>
 
+          {/* Light/Dark Mode Toggle */}
+          <button
+            className="mr-4 px-2 py-1 rounded text-xs font-semibold border border-orange-400 bg-white text-black dark:bg-black dark:text-white dark:border-orange-600 transition-colors duration-300"
+            onClick={() => setDarkMode((d) => !d)}
+            aria-label="Toggle light/dark mode"
+          >
+            {darkMode ? 'Light Mode' : 'Dark Mode'}
+          </button>
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
             {navItems.map((item) => (
